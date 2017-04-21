@@ -1,0 +1,67 @@
+<html>
+<head>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.8/p5.min.js"></script>
+</head>
+<body>
+    <script type="text/javascript">
+
+        function setup() {
+            console.log("start");
+            loadJSON("http://localhost:8080/", loadData);
+            createCanvas(1500, 800);
+            background(51);
+        }
+
+        function loadData(data) {
+            console.log(data);
+            visitTree(data.node, 1);
+
+        }
+
+        function visitTree(node, depth) {
+            // add X and Y to the root
+            if (node.count == 1) {
+                node.x = width/2;
+                node.y = 50;
+
+            }
+
+            node.depth = depth;
+
+
+            if (node.leftChild != null) {
+                depth++;
+                node.leftChild.x = node.x - (500  / depth);
+                node.leftChild.y = node.y + 40;
+                stroke(255);
+                line(node.x, node.y, node.leftChild.x, node.leftChild.y);
+                visitTree(node.leftChild, depth);
+            }
+
+            // Output
+            console.log(node);
+            fill(255);
+            noStroke();
+            textAlign(CENTER);
+            text(node.value + "-" + node.count + "-" + node.depth, node.x, node.y);
+            noFill();
+            stroke(255);
+            ellipse(node.x, node.y, 45, 45);
+
+
+
+            if (node.rightChild != null) {
+                depth++;
+                node.rightChild.x = node.x + (500 / depth);
+                node.rightChild.y = node.y + 40;
+                stroke(255);
+                line(node.x, node.y, node.rightChild.x, node.rightChild.y);
+                visitTree(node.rightChild, depth);
+            }
+        }
+
+
+
+    </script>
+</body>
+</html>
