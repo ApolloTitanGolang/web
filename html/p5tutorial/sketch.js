@@ -1,6 +1,7 @@
 // variables
 var circleX = 50;
 var bgcolor = 0;
+var bubbles = [];
 
 
 // object
@@ -16,11 +17,32 @@ var spot = {
     y: 0
 };
 
+// object with a function
+var bubble = {
+    x: 300,
+    y: 200,
+    display: function() {
+        stroke(random(50));
+        strokeWeight(4);
+        noFill();
+        ellipse(this.x, this.y, 24, 24);
+    },
+    move: function() {
+        this.x = this.x + random(-1, 1);
+        this.y = this.y + random(-1, 1);
+    }
+};
+
 // function setup is loaded once --> in the beginning
 function setup() {
     // createCanvas(800,600);
     createCanvas(windowWidth, windowHeight);
     background(127);
+
+    // Use the Bubble Constructor
+    for (var i = 0; i < 10; i++) {
+        bubbles[i] = new Bubble();
+    }
 }
 
 
@@ -63,9 +85,47 @@ function draw() {
     spot.y = random(0, height);
     ellipse(spot.x, spot.y, 5, 5);
 
+    // function call
+    lollipop(200, 400,59);
+    lollipop(500, 500, 150);
+
+    bubble.display();
+    bubble.move();
+
+    for (var i = 0; i < bubbles.length; i++) {
+        bubbles[i].move();
+        bubbles[i].display();
+    }
+
 }
 
 // function EVENT
 function mousePressed() {
     background(51);
+}
+
+
+function lollipop(x, y, diameter) {
+    fill(0, 200, 255);
+    rect (x-10, y, 20, 150);
+
+    fill(255,0, 200);
+    ellipse(x, y, diameter, diameter);
+}
+
+
+// make a constructor function
+function Bubble() {
+    this.x = random(0, width);
+    this.y = random(0, height);
+    this.display = function() {
+        stroke(255);
+        noFill();
+        ellipse(this.x, this.y, 10, 10);
+    }
+
+    this.move = function() {
+        this.x = this.x + random(-1, 1);
+        this.y = this.y + random(-1, 1);
+    }
 }
